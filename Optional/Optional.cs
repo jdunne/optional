@@ -56,7 +56,10 @@ namespace Optional
             return _hasValue ? _value.ToString() : "Empty";
         }
 
-
+        public T OrElse(T otherValue)
+        {
+            return _hasValue ? _value : otherValue;
+        }
 
         public override bool Equals (object obj)
         {

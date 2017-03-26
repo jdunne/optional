@@ -14,6 +14,7 @@ namespace Optional.Tests
             Assert.Equal(opt.ToString(), "Empty");
             Assert.Equal(opt.GetHashCode(), Optional.Empty<int>().GetHashCode());
             Assert.Equal(opt, Optional.Empty<int>());
+            Assert.Equal(opt.OrElse(456), 456);
         }
 
         [Fact]
@@ -25,6 +26,7 @@ namespace Optional.Tests
             Assert.Equal(opt.ToString(), "123");
             Assert.Equal(opt.GetHashCode(), Optional.From(123).GetHashCode());
             Assert.Equal(opt, Optional.From(123));
+            Assert.Equal(opt.OrElse(456), 123);
         }
 
         [Fact]
@@ -37,13 +39,12 @@ namespace Optional.Tests
             Assert.Equal(opt.ToString(), "Empty");
             Assert.Equal(opt.GetHashCode(), Optional.Empty<int>().GetHashCode());
             Assert.Equal(opt, Optional.Empty<int?>());
+            Assert.Equal(opt.OrElse(456), 456);
         }
 
 
         // TODO
-        // Value
-        // ToString
-        // OrElse
+    
         // OrElseGet
         // OrElseThrow
 
