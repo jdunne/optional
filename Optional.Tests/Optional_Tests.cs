@@ -15,6 +15,8 @@ namespace Optional.Tests
             Assert.Equal(opt.GetHashCode(), Optional.Empty<int>().GetHashCode());
             Assert.Equal(opt, Optional.Empty<int>());
             Assert.Equal(opt.OrElse(456), 456);
+            Assert.Equal(opt.OrElseGet( () => 789), 789);
+            Assert.Throws<InvalidOperationException>(() => opt.OrElseThrow<InvalidOperationException>());
         }
 
         [Fact]
@@ -27,6 +29,8 @@ namespace Optional.Tests
             Assert.Equal(opt.GetHashCode(), Optional.From(123).GetHashCode());
             Assert.Equal(opt, Optional.From(123));
             Assert.Equal(opt.OrElse(456), 123);
+            Assert.Equal(opt.OrElseGet( () => 789), 123);
+            Assert.Equal(opt.OrElseThrow<InvalidOperationException>(), 123);
         }
 
         [Fact]
@@ -40,6 +44,8 @@ namespace Optional.Tests
             Assert.Equal(opt.GetHashCode(), Optional.Empty<int>().GetHashCode());
             Assert.Equal(opt, Optional.Empty<int?>());
             Assert.Equal(opt.OrElse(456), 456);
+            Assert.Equal(opt.OrElseGet( () => 789), 789);
+            Assert.Throws<InvalidOperationException>(() => opt.OrElseThrow<InvalidOperationException>());
         }
 
 

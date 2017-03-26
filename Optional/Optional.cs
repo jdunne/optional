@@ -61,6 +61,20 @@ namespace Optional
             return _hasValue ? _value : otherValue;
         }
 
+        public T OrElseGet(Func<T> factory)
+        {
+            return _hasValue ? _value : factory();
+        }
+
+        public T OrElseThrow<E>() where E : System.Exception, new()
+        {
+            if(!_hasValue)
+            {
+                throw new E();
+            }
+            return _value;
+        }
+
         public override bool Equals (object obj)
         {
             if(obj == null || GetType() != obj.GetType())
