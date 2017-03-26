@@ -61,5 +61,9 @@ namespace Optional.Tests
 
         }
 
+        // Map
+        // FlatMap
+        // Filter
+
     }
 }
