@@ -17,6 +17,10 @@ namespace Optional.Tests
             Assert.Equal(opt.OrElse(456), 456);
             Assert.Equal(opt.OrElseGet( () => 789), 789);
             Assert.Throws<InvalidOperationException>(() => opt.OrElseThrow<InvalidOperationException>());
+
+            var receivedVal = 0;
+            opt.IfHasValue( val => receivedVal = val);
+            Assert.Equal(receivedVal, 0);
         }
 
         [Fact]
@@ -31,6 +35,10 @@ namespace Optional.Tests
             Assert.Equal(opt.OrElse(456), 123);
             Assert.Equal(opt.OrElseGet( () => 789), 123);
             Assert.Equal(opt.OrElseThrow<InvalidOperationException>(), 123);
+    
+            var receivedVal = 0;
+            opt.IfHasValue( val => receivedVal = val);
+            Assert.Equal(receivedVal, 123);
         }
 
         [Fact]
@@ -46,6 +54,11 @@ namespace Optional.Tests
             Assert.Equal(opt.OrElse(456), 456);
             Assert.Equal(opt.OrElseGet( () => 789), 789);
             Assert.Throws<InvalidOperationException>(() => opt.OrElseThrow<InvalidOperationException>());
+
+            var receivedVal = 0;
+            opt.IfHasValue( val => receivedVal = val.Value);
+            Assert.Equal(receivedVal, 0);
+
         }
 
     }

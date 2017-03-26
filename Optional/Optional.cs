@@ -79,6 +79,18 @@ namespace Optional
             return _value;
         }
 
+        public void IfHasValue(Action<T> action)
+        {
+            if(action == null)
+            {
+                throw new NullReferenceException(nameof(action));
+            }
+            if(_hasValue)
+            {
+                action(_value);
+            }
+        }
+
         public override bool Equals (object obj)
         {
             if(obj == null || GetType() != obj.GetType())
