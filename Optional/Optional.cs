@@ -63,6 +63,10 @@ namespace Optional
 
         public T OrElseGet(Func<T> factory)
         {
+            if(factory == null)
+            {
+                throw new NullReferenceException(nameof(factory));
+            }
             return _hasValue ? _value : factory();
         }
 

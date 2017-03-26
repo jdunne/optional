@@ -48,11 +48,5 @@ namespace Optional.Tests
             Assert.Throws<InvalidOperationException>(() => opt.OrElseThrow<InvalidOperationException>());
         }
 
-
-        // TODO
-    
-        // OrElseGet
-        // OrElseThrow
-
     }
 }
