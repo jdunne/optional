@@ -19,6 +19,7 @@ namespace Optional.Tests
             var opt = Optional.From(123);
             Assert.True(opt.HasValue);
             Assert.Equal(opt.ToString(), "123");
+            Assert.Equal(opt.GetHashCode(), Optional.From(123).GetHashCode());
         }
 
         [Fact]
@@ -28,6 +29,7 @@ namespace Optional.Tests
             var opt = Optional.FromNullable(nullX);
             Assert.False(opt.HasValue);
             Assert.Equal(opt.ToString(), "Empty");
+            Assert.Equal(opt.GetHashCode(), Optional.Empty<int>().GetHashCode());
         }
 
 

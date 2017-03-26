@@ -43,6 +43,12 @@ namespace Optional
             return _hasValue ? _value.ToString() : "Empty";
         }
 
+        public override int GetHashCode()
+        {
+            return _hasValue ? _value.GetHashCode() : 0;
+        }
+
+
 
     }
 }
