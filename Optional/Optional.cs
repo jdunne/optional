@@ -91,6 +91,31 @@ namespace Optional
             }
         }
 
+        public Optional<T> Filter(Predicate<T> predicate)
+        {
+            if(predicate == null)
+            {
+                throw new NullReferenceException(nameof(predicate));
+            }
+            return !_hasValue || predicate(_value) ?
+                this :
+                Optional.Empty<T>();
+        }
+
+        public Optional<U> Map<U>(Func<T, U> transform)
+        {
+            if(transform == null)
+            {
+                throw new NullReferenceException(nameof(transform));
+            }
+            if(!_hasValue)
+            {
+                return Optional.Empty<U>();
+            }
+            var newValue = transform(_value);
+            return new Optional<U>( newValue, true);
+        }
+
         public override bool Equals (object obj)
         {
             if(obj == null || GetType() != obj.GetType())

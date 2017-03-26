@@ -21,6 +21,11 @@ namespace Optional.Tests
             var receivedVal = 0;
             opt.IfHasValue( val => receivedVal = val);
             Assert.Equal(receivedVal, 0);
+
+            var stringOpt = opt.Map( val => val.ToString() );
+            Assert.False(stringOpt.HasValue);
+
+            Assert.Equal( opt.Filter( val => (val == 123) ),  Optional.Empty<int>() );
         }
 
         [Fact]
@@ -39,6 +44,13 @@ namespace Optional.Tests
             var receivedVal = 0;
             opt.IfHasValue( val => receivedVal = val);
             Assert.Equal(receivedVal, 123);
+
+            var stringOpt = opt.Map( val => val.ToString() );
+            Assert.True(stringOpt.HasValue);
+            Assert.Equal(stringOpt.Value, "123");
+
+            Assert.Equal( opt.Filter( val => (val == 123) ),  Optional.From(123) );
+            Assert.Equal( opt.Filter( val => (val == 456) ),  Optional.Empty<int>() );            
         }
 
         [Fact]
@@ -59,6 +71,11 @@ namespace Optional.Tests
             opt.IfHasValue( val => receivedVal = val.Value);
             Assert.Equal(receivedVal, 0);
 
+            var stringOpt = opt.Map( val => val.ToString() );
+            Assert.False(stringOpt.HasValue);
+
+            Assert.Equal( opt.Filter( val => ( (val ?? 0) == 456) ),  Optional.Empty<int?>() );            
+            
         }
 
         // Map
