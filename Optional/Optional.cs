@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Optional
 {
@@ -25,7 +26,7 @@ namespace Optional
         }
     }
 
-    public struct Optional<T>
+    public struct Optional<T> : IEquatable<Optional<T>>
     {
         private readonly T _value;
         private readonly bool _hasValue;
@@ -38,17 +39,51 @@ namespace Optional
 
         public bool HasValue => _hasValue;
 
+        public T Value 
+        {
+            get 
+            {
+                if(!_hasValue)
+                {
+                    throw new InvalidOperationException("Cannot access value when not present.");
+                }
+                return _value;
+            }
+        }
+
         public override string ToString()
         {
             return _hasValue ? _value.ToString() : "Empty";
         }
+
+
+
+        public override bool Equals (object obj)
+        {
+            if(obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            return Equals((Optional<T>)obj);
+        }
+        
 
         public override int GetHashCode()
         {
             return _hasValue ? _value.GetHashCode() : 0;
         }
 
-
-
+        public bool Equals(Optional<T> other)
+        {
+            if(!HasValue && !other.HasValue)
+            {
+                return true;
+            }
+            else if( HasValue && other.HasValue )
+            {
+                return EqualityComparer<T>.Default.Equals( _value, other._value );
+            }
+            return false;
+        }
     }
 }

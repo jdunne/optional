@@ -10,7 +10,10 @@ namespace Optional.Tests
         {
             var opt = Optional.Empty<int>();
             Assert.False(opt.HasValue);
+            Assert.Throws<InvalidOperationException>(() => opt.Value);
             Assert.Equal(opt.ToString(), "Empty");
+            Assert.Equal(opt.GetHashCode(), Optional.Empty<int>().GetHashCode());
+            Assert.Equal(opt, Optional.Empty<int>());
         }
 
         [Fact]
@@ -18,8 +21,10 @@ namespace Optional.Tests
         {
             var opt = Optional.From(123);
             Assert.True(opt.HasValue);
+            Assert.Equal(opt.Value, 123);
             Assert.Equal(opt.ToString(), "123");
             Assert.Equal(opt.GetHashCode(), Optional.From(123).GetHashCode());
+            Assert.Equal(opt, Optional.From(123));
         }
 
         [Fact]
@@ -27,15 +32,15 @@ namespace Optional.Tests
         {
             int? nullX = null;
             var opt = Optional.FromNullable(nullX);
+            Assert.Throws<InvalidOperationException>(() => opt.Value);
             Assert.False(opt.HasValue);
             Assert.Equal(opt.ToString(), "Empty");
             Assert.Equal(opt.GetHashCode(), Optional.Empty<int>().GetHashCode());
+            Assert.Equal(opt, Optional.Empty<int?>());
         }
 
 
         // TODO
-        // nullable types
-        // equals and hascode
         // Value
         // ToString
         // OrElse
