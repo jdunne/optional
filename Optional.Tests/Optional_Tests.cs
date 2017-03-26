@@ -6,16 +6,39 @@ namespace Optional.Tests
     public class Optional_UnitTest
     {
         [Fact]
-        public void TestHasEmpty()
+        public void TestEmpty()
         {
-            var x = Optional.From(123);
-            Assert.True(x.HasValue);
-
-            int? y = null;
-            var x2 = Optional.FromNullable(y);
-            Assert.False(x2.HasValue);
-
-            Assert.False(Optional.Empty<int>().HasValue);
+            var opt = Optional.Empty<int>();
+            Assert.False(opt.HasValue);
+            Assert.Equal(opt.ToString(), "Empty");
         }
+
+        [Fact]
+        public void TestOptionalWithValue()
+        {
+            var opt = Optional.From(123);
+            Assert.True(opt.HasValue);
+            Assert.Equal(opt.ToString(), "123");
+        }
+
+        [Fact]
+        public void TestOptionalWithoutValue()
+        {
+            int? nullX = null;
+            var opt = Optional.FromNullable(nullX);
+            Assert.False(opt.HasValue);
+            Assert.Equal(opt.ToString(), "Empty");
+        }
+
+
+        // TODO
+        // nullable types
+        // equals and hascode
+        // Value
+        // ToString
+        // OrElse
+        // OrElseGet
+        // OrElseThrow
+
     }
 }

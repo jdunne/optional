@@ -38,6 +38,11 @@ namespace Optional
 
         public bool HasValue => _hasValue;
 
+        public override string ToString()
+        {
+            return _hasValue ? _value.ToString() : "Empty";
+        }
+
 
     }
 }
