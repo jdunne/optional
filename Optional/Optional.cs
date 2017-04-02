@@ -3,9 +3,11 @@ using System.Collections.Generic;
 
 namespace Optional
 {
-    /// <summary></summary>
     public class Optional
     {
+        /// <summary>Creates an Optional from a reference type.</summary>
+        /// <param name="val">Must not be null.</param>
+        /// <exception cref="NullReferenceException">Thrown NullReferenceException if val is null.</exception>
         static public Optional<T> From<T>(T val) where T: class
         {
             if(val == null)
@@ -15,22 +17,27 @@ namespace Optional
             return new Optional<T>( val, true );
         }
 
+        /// <summary>Creates an Optional from a reference type.</summary>
+        /// <param name="val">May be null.</param>
         static public Optional<T> FromNullable<T>(T val) where T : class
         {
             return (val == null) ? Empty<T>() : From<T>( val );
         }
 
+        /// <summary>Creates an Optional from a value type.</summary>
         static public Optional<T> FromValue<T>(T val) where T: struct
         {
             return new Optional<T>( val, true );
         }
         
+        /// <summary>Returns an empty optional.</summary>
         static public Optional<T> Empty<T>()
         {
             return new Optional<T>( default(T), false );
         }
     }
 
+    /// <summary> An Optional can either hold a value or hold nothing. </summary>
     public struct Optional<T> : IEquatable<Optional<T>>
     {
         private readonly T _value;
@@ -42,8 +49,11 @@ namespace Optional
             _hasValue = hasValue;
         }
 
+        /// <summary>Returns true if a value is present.</summary>
         public bool HasValue => _hasValue;
 
+        /// <summary>Returns a value if it is present, else throws an exception</summary>
+        /// <exception cref="InvalidOperationException">Thrown when HasValue is false.</exception>
         public T Value 
         {
             get 
