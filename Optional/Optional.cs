@@ -41,16 +41,15 @@ namespace Optional
     public struct Optional<T> : IEquatable<Optional<T>>
     {
         private readonly T _value;
-        private readonly bool _hasValue;
 
         internal Optional(T value, bool hasValue)
         {
             _value = value;
-            _hasValue = hasValue;
+            HasValue = hasValue;
         }
 
         /// <summary>Returns true if a value is present.</summary>
-        public bool HasValue => _hasValue;
+        public bool HasValue { get; private set; }
 
         /// <summary>Returns a value if it is present, else throws an exception</summary>
         /// <exception cref="InvalidOperationException">Thrown when HasValue is false.</exception>
@@ -58,7 +57,7 @@ namespace Optional
         {
             get 
             {
-                if(!_hasValue)
+                if(!HasValue)
                 {
                     throw new InvalidOperationException("Cannot access value when not present.");
                 }
@@ -68,12 +67,12 @@ namespace Optional
 
         public override string ToString()
         {
-            return _hasValue ? _value.ToString() : "Empty";
+            return HasValue ? _value.ToString() : "Empty";
         }
 
         public T OrElse(T otherValue)
         {
-            return _hasValue ? _value : otherValue;
+            return HasValue ? _value : otherValue;
         }
 
         public T OrElseGet(Func<T> factory)
@@ -82,12 +81,12 @@ namespace Optional
             {
                 throw new NullReferenceException(nameof(factory));
             }
-            return _hasValue ? _value : factory();
+            return HasValue ? _value : factory();
         }
 
         public T OrElseThrow<E>() where E : System.Exception, new()
         {
-            if(!_hasValue)
+            if(!HasValue)
             {
                 throw new E();
             }
@@ -100,7 +99,7 @@ namespace Optional
             {
                 throw new NullReferenceException(nameof(action));
             }
-            if(_hasValue)
+            if(HasValue)
             {
                 action(_value);
             }
@@ -112,7 +111,7 @@ namespace Optional
             {
                 throw new NullReferenceException(nameof(predicate));
             }
-            return !_hasValue || predicate(_value) ?
+            return !HasValue || predicate(_value) ?
                 this :
                 Optional.Empty<T>();
         }
@@ -123,7 +122,7 @@ namespace Optional
             {
                 throw new NullReferenceException(nameof(transform));
             }
-            if(!_hasValue)
+            if(!HasValue)
             {
                 return Optional.Empty<U>();
             }
@@ -143,7 +142,7 @@ namespace Optional
 
         public override int GetHashCode()
         {
-            return _hasValue ? _value.GetHashCode() : 0;
+            return HasValue ? _value.GetHashCode() : 0;
         }
 
         public bool Equals(Optional<T> other)
