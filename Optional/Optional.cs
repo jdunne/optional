@@ -3,9 +3,10 @@ using System.Collections.Generic;
 
 namespace Optional
 {
+    /// <summary></summary>
     public class Optional
     {
-        static public Optional<T> From<T>(T val)
+        static public Optional<T> From<T>(T val) where T: class
         {
             if(val == null)
             {
@@ -14,12 +15,16 @@ namespace Optional
             return new Optional<T>( val, true );
         }
 
-        static public Optional<T> FromNullable<T>(T val)
+        static public Optional<T> FromNullable<T>(T val) where T : class
         {
-            var hasValue = (val != null);
-            return new Optional<T>( val, hasValue );
+            return (val == null) ? Empty<T>() : From<T>( val );
         }
 
+        static public Optional<T> FromValue<T>(T val) where T: struct
+        {
+            return new Optional<T>( val, true );
+        }
+        
         static public Optional<T> Empty<T>()
         {
             return new Optional<T>( default(T), false );
