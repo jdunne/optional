@@ -127,6 +127,10 @@ namespace Optional
                 return Optional.Empty<U>();
             }
             var newValue = transform(_value);
+            if(object.Equals(newValue, null))
+            {
+                return Optional.Empty<U>();
+            }
             return new Optional<U>( newValue, true);
         }
 

@@ -49,8 +49,12 @@ namespace Optional.Tests
             Assert.True(stringOpt.HasValue);
             Assert.Equal(stringOpt.Value, "123");
 
+            var nullMap = opt.Map<string>(val => null);
+            Assert.False(nullMap.HasValue);
+            Assert.Equal(nullMap.GetHashCode(), Optional.Empty<string>().GetHashCode());
+
             Assert.Equal( opt.Filter( val => (val == 123) ),  Optional.FromValue(123) );
-            Assert.Equal( opt.Filter( val => (val == 456) ),  Optional.Empty<int>() );            
+            Assert.Equal( opt.Filter( val => (val == 456) ),  Optional.Empty<int>() );
         }
 
         [Fact]
