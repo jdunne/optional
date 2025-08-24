@@ -84,5 +84,13 @@ namespace Optional.Tests
         // Map
         // FlatMap
 
+        [Fact]
+        public void MapToNullReferenceProducesEmptyOptional()
+        {
+            var opt = Optional.From("abc");
+            var result = opt.Map<string>(s => null);
+            Assert.False(result.HasValue);
+        }
+
     }
 }

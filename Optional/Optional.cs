@@ -127,11 +127,11 @@ namespace Optional
                 return Optional.Empty<U>();
             }
             var newValue = transform(_value);
-            if(object.Equals(newValue, null))
+            if(newValue == null && !typeof(U).IsValueType)
             {
                 return Optional.Empty<U>();
             }
-            return new Optional<U>( newValue, true);
+            return new Optional<U>(newValue, true);
         }
 
         public override bool Equals (object obj)
