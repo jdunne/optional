@@ -7,7 +7,7 @@ namespace Optional
     {
         /// <summary>Creates an Optional from a reference type.</summary>
         /// <param name="val">Must not be null.</param>
-        /// <exception cref="NullReferenceException">Thrown NullReferenceException if val is null.</exception>
+        /// <exception cref="NullReferenceException">Thrown if <paramref name="val"/> is null.</exception>
         static public Optional<T> From<T>(T val) where T: class
         {
             if(val == null)
