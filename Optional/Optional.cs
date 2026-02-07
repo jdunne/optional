@@ -7,33 +7,30 @@ namespace Optional
     {
         /// <summary>Creates an Optional from a reference type.</summary>
         /// <param name="val">Must not be null.</param>
-        /// <exception cref="NullReferenceException">Thrown if <paramref name="val"/> is null.</exception>
-        static public Optional<T> From<T>(T val) where T: class
+        /// <exception cref="ArgumentNullException">Thrown ArgumentNullException if val is null.</exception>
+        static public Optional<T> From<T>(T val) where T : class
         {
-            if(val == null)
-            {
-                throw new NullReferenceException(nameof(val));
-            }
-            return new Optional<T>( val, true );
+            ArgumentNullException.ThrowIfNull(val);
+            return new Optional<T>(val, true);
         }
 
         /// <summary>Creates an Optional from a reference type.</summary>
         /// <param name="val">May be null.</param>
         static public Optional<T> FromNullable<T>(T val) where T : class
         {
-            return (val == null) ? Empty<T>() : From<T>( val );
+            return (val == null) ? Empty<T>() : From<T>(val);
         }
 
         /// <summary>Creates an Optional from a value type.</summary>
-        static public Optional<T> FromValue<T>(T val) where T: struct
+        static public Optional<T> FromValue<T>(T val) where T : struct
         {
-            return new Optional<T>( val, true );
+            return new Optional<T>(val, true);
         }
-        
+
         /// <summary>Returns an empty optional.</summary>
         static public Optional<T> Empty<T>()
         {
-            return new Optional<T>( default(T), false );
+            return new Optional<T>(default(T), false);
         }
     }
 
@@ -53,11 +50,11 @@ namespace Optional
 
         /// <summary>Returns a value if it is present, else throws an exception</summary>
         /// <exception cref="InvalidOperationException">Thrown when HasValue is false.</exception>
-        public T Value 
+        public T Value
         {
-            get 
+            get
             {
-                if(!HasValue)
+                if (!HasValue)
                 {
                     throw new InvalidOperationException("Cannot access value when not present.");
                 }
@@ -65,7 +62,7 @@ namespace Optional
             }
         }
 
-        public override string ToString()
+        public override readonly string ToString()
         {
             return HasValue ? _value.ToString() : "Empty";
         }
@@ -77,16 +74,13 @@ namespace Optional
 
         public T OrElseGet(Func<T> factory)
         {
-            if(factory == null)
-            {
-                throw new NullReferenceException(nameof(factory));
-            }
+            ArgumentNullException.ThrowIfNull(factory);
             return HasValue ? _value : factory();
         }
 
         public T OrElseThrow<E>() where E : System.Exception, new()
         {
-            if(!HasValue)
+            if (!HasValue)
             {
                 throw new E();
             }
@@ -95,11 +89,8 @@ namespace Optional
 
         public void IfHasValue(Action<T> action)
         {
-            if(action == null)
-            {
-                throw new NullReferenceException(nameof(action));
-            }
-            if(HasValue)
+            ArgumentNullException.ThrowIfNull(action);
+            if (HasValue)
             {
                 action(_value);
             }
@@ -107,10 +98,7 @@ namespace Optional
 
         public Optional<T> Filter(Predicate<T> predicate)
         {
-            if(predicate == null)
-            {
-                throw new NullReferenceException(nameof(predicate));
-            }
+            ArgumentNullException.ThrowIfNull(predicate);
             return !HasValue || predicate(_value) ?
                 this :
                 Optional.Empty<T>();
@@ -118,46 +106,39 @@ namespace Optional
 
         public Optional<U> Map<U>(Func<T, U> transform)
         {
-            if(transform == null)
-            {
-                throw new NullReferenceException(nameof(transform));
-            }
-            if(!HasValue)
+
+            ArgumentNullException.ThrowIfNull(transform);
+            if (!HasValue)
             {
                 return Optional.Empty<U>();
             }
             var newValue = transform(_value);
-            if(object.Equals(newValue, null))
-            {
-                return Optional.Empty<U>();
-            }
-            return new Optional<U>( newValue, true);
+            return new Optional<U>(newValue, true);
         }
 
-        public override bool Equals (object obj)
+        public override readonly bool Equals(object obj)
         {
-            if(obj == null || GetType() != obj.GetType())
+            if (obj == null || GetType() != obj.GetType())
             {
                 return false;
             }
             return Equals((Optional<T>)obj);
         }
-        
 
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             return HasValue ? _value.GetHashCode() : 0;
         }
 
-        public bool Equals(Optional<T> other)
+        public readonly bool Equals(Optional<T> other)
         {
-            if(!HasValue && !other.HasValue)
+            if (!HasValue && !other.HasValue)
             {
                 return true;
             }
-            else if( HasValue && other.HasValue )
+            else if (HasValue && other.HasValue)
             {
-                return EqualityComparer<T>.Default.Equals( _value, other._value );
+                return EqualityComparer<T>.Default.Equals(_value, other._value);
             }
             return false;
         }
