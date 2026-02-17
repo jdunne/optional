@@ -7,7 +7,7 @@ namespace Optional
     {
         /// <summary>Creates an Optional from a reference type.</summary>
         /// <param name="val">Must not be null.</param>
-        /// <exception cref="ArgumentNullException">Thrown ArgumentNullException if val is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="val"/> is null.</exception>
         static public Optional<T> From<T>(T val) where T : class
         {
             ArgumentNullException.ThrowIfNull(val);
