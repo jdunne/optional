@@ -106,13 +106,16 @@ namespace Optional
 
         public Optional<U> Map<U>(Func<T, U> transform)
         {
-
             ArgumentNullException.ThrowIfNull(transform);
             if (!HasValue)
             {
                 return Optional.Empty<U>();
             }
             var newValue = transform(_value);
+            if (object.Equals(newValue, null))
+            {
+                return Optional.Empty<U>();
+            }
             return new Optional<U>(newValue, true);
         }
 

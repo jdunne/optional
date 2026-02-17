@@ -11,21 +11,21 @@ namespace Optional.Tests
             var opt = Optional.Empty<int>();
             Assert.False(opt.HasValue);
             Assert.Throws<InvalidOperationException>(() => opt.Value);
-            Assert.Equal(opt.ToString(), "Empty");
-            Assert.Equal(opt.GetHashCode(), Optional.Empty<int>().GetHashCode());
-            Assert.Equal(opt, Optional.Empty<int>());
-            Assert.Equal(opt.OrElse(456), 456);
-            Assert.Equal(opt.OrElseGet( () => 789), 789);
+            Assert.Equal("Empty", opt.ToString());
+            Assert.Equal(Optional.Empty<int>().GetHashCode(), opt.GetHashCode());
+            Assert.Equal(Optional.Empty<int>(), opt);
+            Assert.Equal(456, opt.OrElse(456));
+            Assert.Equal(789, opt.OrElseGet(() => 789));
             Assert.Throws<InvalidOperationException>(() => opt.OrElseThrow<InvalidOperationException>());
 
             var receivedVal = 0;
-            opt.IfHasValue( val => receivedVal = val);
-            Assert.Equal(receivedVal, 0);
+            opt.IfHasValue(val => receivedVal = val);
+            Assert.Equal(0, receivedVal);
 
-            var stringOpt = opt.Map( val => val.ToString() );
+            var stringOpt = opt.Map(val => val.ToString());
             Assert.False(stringOpt.HasValue);
 
-            Assert.Equal( opt.Filter( val => (val == 123) ),  Optional.Empty<int>() );
+            Assert.Equal(Optional.Empty<int>(), opt.Filter(val => (val == 123)));
         }
 
         [Fact]
@@ -33,28 +33,28 @@ namespace Optional.Tests
         {
             var opt = Optional.FromValue(123);
             Assert.True(opt.HasValue);
-            Assert.Equal(opt.Value, 123);
-            Assert.Equal(opt.ToString(), "123");
-            Assert.Equal(opt.GetHashCode(), Optional.FromValue(123).GetHashCode());
-            Assert.Equal(opt, Optional.FromValue(123));
-            Assert.Equal(opt.OrElse(456), 123);
-            Assert.Equal(opt.OrElseGet( () => 789), 123);
-            Assert.Equal(opt.OrElseThrow<InvalidOperationException>(), 123);
+            Assert.Equal(123, opt.Value);
+            Assert.Equal("123", opt.ToString());
+            Assert.Equal(Optional.FromValue(123).GetHashCode(), opt.GetHashCode());
+            Assert.Equal(Optional.FromValue(123), opt);
+            Assert.Equal(123, opt.OrElse(456));
+            Assert.Equal(123, opt.OrElseGet(() => 789));
+            Assert.Equal(123, opt.OrElseThrow<InvalidOperationException>());
     
             var receivedVal = 0;
-            opt.IfHasValue( val => receivedVal = val);
-            Assert.Equal(receivedVal, 123);
+            opt.IfHasValue(val => receivedVal = val);
+            Assert.Equal(123, receivedVal);
 
-            var stringOpt = opt.Map( val => val.ToString() );
+            var stringOpt = opt.Map(val => val.ToString());
             Assert.True(stringOpt.HasValue);
-            Assert.Equal(stringOpt.Value, "123");
+            Assert.Equal("123", stringOpt.Value);
 
             var nullMap = opt.Map<string>(val => null);
             Assert.False(nullMap.HasValue);
-            Assert.Equal(nullMap.GetHashCode(), Optional.Empty<string>().GetHashCode());
+            Assert.Equal(Optional.Empty<string>().GetHashCode(), nullMap.GetHashCode());
 
-            Assert.Equal( opt.Filter( val => (val == 123) ),  Optional.FromValue(123) );
-            Assert.Equal( opt.Filter( val => (val == 456) ),  Optional.Empty<int>() );
+            Assert.Equal(Optional.FromValue(123), opt.Filter(val => (val == 123)));
+            Assert.Equal(Optional.Empty<int>(), opt.Filter(val => (val == 456)));
         }
 
         [Fact]
@@ -64,21 +64,21 @@ namespace Optional.Tests
             var opt = Optional.FromNullable(nullX);
             Assert.Throws<InvalidOperationException>(() => opt.Value);
             Assert.False(opt.HasValue);
-            Assert.Equal(opt.ToString(), "Empty");
-            Assert.Equal(opt.GetHashCode(), Optional.Empty<int>().GetHashCode());
-            Assert.Equal(opt, Optional.Empty<string>());
-            Assert.Equal(opt.OrElse("abc"), "abc");
-            Assert.Equal(opt.OrElseGet( () => "def"), "def");
+            Assert.Equal("Empty", opt.ToString());
+            Assert.Equal(Optional.Empty<int>().GetHashCode(), opt.GetHashCode());
+            Assert.Equal(Optional.Empty<string>(), opt);
+            Assert.Equal("abc", opt.OrElse("abc"));
+            Assert.Equal("def", opt.OrElseGet(() => "def"));
             Assert.Throws<InvalidOperationException>(() => opt.OrElseThrow<InvalidOperationException>());
 
             string receivedVal = string.Empty;
-            opt.IfHasValue( val => receivedVal = val);
-            Assert.Equal(receivedVal, string.Empty);
+            opt.IfHasValue(val => receivedVal = val);
+            Assert.Equal(string.Empty, receivedVal);
 
-            var stringOpt = opt.Map( val => val.ToString() );
+            var stringOpt = opt.Map(val => val.ToString());
             Assert.False(stringOpt.HasValue);
 
-            Assert.Equal( opt.Filter( val => val == "456"), Optional.Empty<string>() );            
+            Assert.Equal(Optional.Empty<string>(), opt.Filter(val => val == "456"));
         }
 
         // Map
