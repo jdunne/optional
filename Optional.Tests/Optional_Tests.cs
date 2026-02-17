@@ -81,8 +81,47 @@ namespace Optional.Tests
             Assert.Equal(Optional.Empty<string>(), opt.Filter(val => val == "456"));
         }
 
-        // Map
-        // FlatMap
+        [Fact]
+        public void From_ThrowsArgumentNullException_WhenValueIsNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => Optional.From<string>(null));
+        }
+
+        [Fact]
+        public void OrElseGet_ThrowsArgumentNullException_WhenFactoryIsNull()
+        {
+            var opt = Optional.FromValue(123);
+            Func<int> factory = null;
+
+            Assert.Throws<ArgumentNullException>(() => opt.OrElseGet(factory));
+        }
+
+        [Fact]
+        public void IfHasValue_ThrowsArgumentNullException_WhenActionIsNull()
+        {
+            var opt = Optional.FromValue(123);
+            Action<int> action = null;
+
+            Assert.Throws<ArgumentNullException>(() => opt.IfHasValue(action));
+        }
+
+        [Fact]
+        public void Filter_ThrowsArgumentNullException_WhenPredicateIsNull()
+        {
+            var opt = Optional.FromValue(123);
+            Predicate<int> predicate = null;
+
+            Assert.Throws<ArgumentNullException>(() => opt.Filter(predicate));
+        }
+
+        [Fact]
+        public void Map_ThrowsArgumentNullException_WhenTransformIsNull()
+        {
+            var opt = Optional.FromValue(123);
+            Func<int, string> transform = null;
+
+            Assert.Throws<ArgumentNullException>(() => opt.Map(transform));
+        }
 
     }
 }
